@@ -1,0 +1,12 @@
+{% extends 'modelo/padrao.html' %}
+{% load staticfiles %}
+{% block title %}
+    <title>Walk 01</title>
+{% endblock %}
+{% block body %}
+    <div id="game"></div>
+{% endblock %}
+{% block script %}
+<script src="{% static 'src/walk/walk01/Game.js' %}"></script>
+<script src="{% static 'src/walk/walk01/app.js' %}"></script>
+{% endblock %}

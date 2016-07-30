@@ -1,0 +1,23 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+        <title>Title</title>
+    {% endblock %}
+    {% block style %}
+
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+
+{% endblock %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/phaser.min.js' %}"></script>
+{% block script %}
+
+{% endblock %}
+</body>
+</html>
