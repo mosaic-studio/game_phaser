@@ -6,6 +6,28 @@
     {% block title %}
         <title>Title</title>
     {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
+    <style>
+        body {
+            padding-top: 70px;
+            padding-bottom: 30px;
+        }
+
+        .theme-dropdown .dropdown-menu {
+            position: static;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .theme-showcase > p > .btn {
+            margin: 5px 0;
+        }
+
+        .theme-showcase .navbar .container {
+            width: auto;
+        }
+    </style>
     {% block style %}
 
     {% endblock %}
@@ -15,7 +37,7 @@
 
 {% endblock %}
 <script src="{% static 'js/jquery.min.js' %}"></script>
-<script src="{% static 'js/phaser.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
 {% block script %}
 
 {% endblock %}
