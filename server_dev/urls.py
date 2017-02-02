@@ -18,6 +18,7 @@ from django.contrib import admin
 from website import views
 
 urlpatterns = [
-    url('^$', views.walk01),
+    url('^$', views.index),
+    url('^walk01/$', views.walk01),
     url(r'^admin/', admin.site.urls),
 ]

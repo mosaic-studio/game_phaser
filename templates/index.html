@@ -1,0 +1,21 @@
+{% extends 'modelo/padrao.html' %}
+{% load staticfiles %}
+{% block title %}
+    <title>Página Inicial</title>
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Exemplos Phaser</h1>
+            <p>Exemplos de jogos utilizando o framework Phaser</p>
+        </div>
+        <div class="col-lg-8">
+            <table class="table">
+                <tr> <th>#</th> <th>Jogo</th> </tr>
+                <tr> <th>1</th> <td><a href="/walk01/">Walk 01</a> </td> </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+{% endblock %}
