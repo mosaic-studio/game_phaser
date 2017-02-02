@@ -54,7 +54,10 @@ BasicGame.Game.prototype = {
         // Here we load the assets required for our preloader (in this case a 
         // background and a loading bar)
         // this.load.image('logo', 'asset/phaser.png');
-        this.load.atlas('bot', 'static/src/walk/walk01/asset/p1_walk.png', 'static/src/walk/walk01/asset/p1_walk.json');
+        this.load.atlas('player', 'static/src/walk/walk01/asset/p1_walk.png', 'static/src/walk/walk01/asset/p1_walk.json');
+        this.load.tilemap('MyTilemap', 'static/src/walk/walk01/asset/tilemap.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('MyTiles', 'static/src/walk/walk01/asset/tilesheet_complete.png');
+        this.load.image('greenJewel', 'static/src/walk/walk01/asset/Items/greenJewel.png');
     },
 
     create: function () {
@@ -65,17 +68,71 @@ BasicGame.Game.prototype = {
         //    'logo');
         // Set the anchor to the center of the sprite
         // this.logo.anchor.setTo(0.5, 0.5);
-        
-        this.bot = this.add.sprite(this.world.centerX, 300, 'bot');
-        this.bot.animations.add('run');
-        this.bot.animations.play('run', 15, true);
-        
-        this.text = this.add.text(32, 32, 'cursor', { fill: '#ffffff' });
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+        this.map = this.game.add.tilemap('MyTilemap');
+        this.map.addTilesetImage('tilesheet_complete', 'MyTiles');
+
+        this.layer = this.map.createLayer('terrain');
+        this.map.setCollisionBetween(1, 100, true, 'terrain');
+        this.layer.resizeWorld();
+        this.layer.wrap = true;
+
+        this.game.physics.arcade.enable(this.layer);
+
+        this.greenJewel = this.game.add.sprite(0, 0, 'greenJewel');
+
+        var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
+
+        this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
+        this.game.physics.arcade.enable(this.player);
+        this.player.body.bounce.y = 0.2;
+        this.player.body.gravity.y = 300;
+        this.player.body.collideWorldBounds = true;
+        this.player.animations.add('run');
+        this.player.animations.play('run', 15, true);
+
+
+        // this.game.physics.arcade.collide(this.player, this.layer);
+
+        // this.map.setCollisionBetween(1, 10000, true, "collision");
+
+        // this.text = this.add.text(32, 32, 'cursor', { fill: '#ffffff' });
+        this.cursors = this.game.input.keyboard.createCursorKeys();
     },
-    
+
     update: function(){
-        
+        this.game.physics.arcade.collide(this.player, this.layer);
+
+        this.player.body.velocity.x = 0;
+
+        if (this.cursors.left.isDown)
+        {
+            //  Move to the left
+            this.player.body.velocity.x = -150;
+
+            this.player.animations.play('run');
+        }
+        else if (this.cursors.right.isDown)
+        {
+            //  Move to the right
+            this.player.body.velocity.x = 150;
+
+            this.player.animations.play('run');
+        }
+        else
+        {
+            //  Stand still
+            this.player.animations.stop();
+
+            this.player.frame = 4;
+        }
+
+        //  Allow the player to jump if they are touching the ground.
+        if (this.cursors.up.isDown && (this.player.body.onFloor() || this.player.body.touching.down))
+        {
+            this.player.body.velocity.y = -350;
+        }
     },
 
     gameResized: function (width, height) {
@@ -86,6 +143,29 @@ BasicGame.Game.prototype = {
         // this callback is only really useful if you use a ScaleMode of RESIZE 
         // and place it inside your main game state.
 
+    },
+
+    findObjectsByType: function(type, map, layer) {
+        var result = [];
+        map.objects[layer].forEach(function(element){
+            if(element.properties.type === type) {
+                //Phaser uses top left, Tiled bottom left so we have to adjust the y position
+                //also keep in mind that the cup images are a bit smaller than the tile which is 16x16
+                //so they might not be placed in the exact pixel position as in Tiled
+                element.y -= map.tileHeight;
+                result.push(element);
+            }
+        });
+        return result;
+    },
+
+    createFromTiledObject: function(element, group) {
+        var sprite = group.create(element.x, element.y, element.properties.sprite);
+
+        //copy all properties to the sprite
+        Object.keys(element.properties).forEach(function(key){
+            sprite[key] = element.properties[key];
+        });
     }
 
 };

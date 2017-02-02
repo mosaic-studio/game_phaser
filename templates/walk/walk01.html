@@ -3,10 +3,18 @@
 {% block title %}
     <title>Walk 01</title>
 {% endblock %}
+{% block style %}
+    <style>
+        body {
+            padding: 0px;
+            margin: 0px;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <div id="game"></div>
 {% endblock %}
 {% block script %}
-<script src="{% static 'src/walk/walk01/Game.js' %}"></script>
-<script src="{% static 'src/walk/walk01/app.js' %}"></script>
+    <script src="{% static 'src/walk/walk01/Game.js' %}"></script>
+    <script src="{% static 'src/walk/walk01/app.js' %}"></script>
 {% endblock %}
